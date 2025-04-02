@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: mapa-preferencias
+    env: python
+    buildCommand: pip install poetry && poetry install
+    startCommand: gunicorn --bind 0.0.0.0:$PORT --reuse-port main:app
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.9.0

@@ -1,0 +1,2 @@
+id,username,email,password_hash
+c7886c05-f8f7-4244-b303-d7a92e7ba698,Gledson,gledson.lima@acessooh.com.br,scrypt:32768:8:1$2CQm6Jaa2jYkrG9R$3dc4b2d9bb0e618120009f24349b8cdfd910c4f4c8f2e8ba033abdfd177d1c8cd662afb93718dd8a7e50065bfa2bacd58bc2a24f88f12190eb76ffbc36fc636a
