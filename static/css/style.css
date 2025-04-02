@@ -1,0 +1,159 @@
+/* Estilos personalizados para a aplicação */
+
+/* Container do mapa */
+.map-container {
+    width: 100%;
+    height: 500px;
+    border-radius: 0.25rem;
+    overflow: hidden;
+}
+
+/* Estilos para as opções de prioridade */
+.priority-options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 15px 0;
+}
+
+.form-check-inline {
+    margin-right: 0;
+}
+
+.form-check-input {
+    cursor: pointer;
+}
+
+.form-check-label {
+    cursor: pointer;
+}
+
+/* Cores para os diferentes níveis de prioridade */
+#priority1:checked + label {
+    color: #d35400; /* Laranja escuro para prioridade máxima */
+    font-weight: bold;
+}
+
+#priority2:checked + label {
+    color: #e67e22; /* Laranja */
+    font-weight: bold;
+}
+
+#priority3:checked + label {
+    color: #f39c12; /* Amarelo-laranja */
+    font-weight: bold;
+}
+
+#priority4:checked + label {
+    color: #f1c40f; /* Amarelo */
+    font-weight: bold;
+}
+
+#priority5:checked + label {
+    color: #2ecc71; /* Verde */
+    font-weight: bold;
+}
+
+/* Tabela de preferências */
+#preferenciaTable {
+    margin-bottom: 0;
+}
+
+#preferenciaTable th,
+#preferenciaTable td {
+    padding: 0.5rem;
+    font-size: 0.9rem;
+}
+
+#semPreferencias {
+    color: #6c757d;
+    font-style: italic;
+}
+
+/* Estilizando notificações */
+#notificationModal .modal-header {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+#notificationModal .modal-footer {
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Tornar formulário mais compacto em telas menores */
+@media (max-width: 768px) {
+    .card-body {
+        padding: 1rem;
+    }
+    
+    .form-label {
+        margin-bottom: 0.3rem;
+    }
+    
+    .mb-3 {
+        margin-bottom: 0.8rem !important;
+    }
+}
+
+/* Estilo para estrelas na tabela */
+.preferencia-stars {
+    color: #ffc107;
+}
+
+.estrela-vazia {
+    color: #ddd;
+}
+
+/* Estilo para a barra de pesquisa */
+.search-container {
+    position: relative;
+}
+
+.search-results {
+    position: absolute;
+    top: 40px;
+    right: 0;
+    width: 100%;
+    background-color: var(--bs-dark);
+    border: 1px solid var(--bs-border-color);
+    border-radius: 4px;
+    z-index: 1000;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.search-result-item {
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--bs-border-color);
+    cursor: pointer;
+}
+
+.search-result-item:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.highlight-result {
+    color: var(--bs-info);
+    font-weight: bold;
+}
+
+/* Estilos para a área de upload do CSV */
+#uploadForm {
+    border-radius: 0.25rem;
+}
+
+#csvFile {
+    padding: 0.5rem;
+    font-size: 0.875rem;
+}
+
+.form-text {
+    font-size: 0.75rem;
+    opacity: 0.8;
+    margin-top: 0.25rem;
+}
+
+/* Estilo do botão de upload enquanto carregando */
+.btn-loading {
+    opacity: 0.8;
+    cursor: wait;
+}
