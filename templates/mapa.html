@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    
+        <script>
+            L_NO_TOUCH = false;
+            L_DISABLE_3D = false;
+        </script>
+    
+    <style>html, body {width: 100%;height: 100%;margin: 0;padding: 0;}</style>
+    <style>#map {position:absolute;top:0;bottom:0;right:0;left:0;}</style>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_4e2a061ad5dadc5669b663ebaee9ae80 {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+        
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.1.0/leaflet.markercluster.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.1.0/MarkerCluster.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.1.0/MarkerCluster.Default.css"/>
+</head>
+<body>
+    
+    
+            <div class="folium-map" id="map_4e2a061ad5dadc5669b663ebaee9ae80" ></div>
+        
+</body>
+<script>
+    
+    
+            var map_4e2a061ad5dadc5669b663ebaee9ae80 = L.map(
+                "map_4e2a061ad5dadc5669b663ebaee9ae80",
+                {
+                    center: [-15.7801, -47.9292],
+                    crs: L.CRS.EPSG3857,
+                    ...{
+  "zoom": 5,
+  "zoomControl": true,
+  "preferCanvas": false,
+}
+
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_0864a231a33e8afa0e86e765b540bd61 = L.tileLayer(
+                "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {
+  "minZoom": 0,
+  "maxZoom": 19,
+  "maxNativeZoom": 19,
+  "noWrap": false,
+  "attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors",
+  "subdomains": "abc",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1,
+}
+
+            );
+        
+    
+            tile_layer_0864a231a33e8afa0e86e765b540bd61.addTo(map_4e2a061ad5dadc5669b663ebaee9ae80);
+        
+    
+            var marker_cluster_eace95bd6559eab44fff70c3a510c88a = L.markerClusterGroup(
+                {
+}
+            );
+        
+    
+            var marker_2d31adc721845f3002400f64b6c5a906 = L.marker(
+                [-23.55052, -46.633308],
+                {
+}
+            ).addTo(marker_cluster_eace95bd6559eab44fff70c3a510c88a);
+        
+    
+            var icon_2a229db52c03804d2c7ffb21a8211fa6 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_fe15c69cf21d18f452c2f9499a8724f2 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_ecef44a32f737b875a388ad43711221c = $(`<div id="html_ecef44a32f737b875a388ad43711221c" style="width: 100.0%; height: 100.0%;">             <div>                 <strong>São Paulo, SP</strong><br>                 Av. Paulista, 1000<br>                 <button class='btn btn-sm btn-primary select-endereco'                  data-cidade='São Paulo'                  data-estado='SP'                  data-endereco='Av. Paulista, 1000'>                 Selecionar                 </button>             </div>             </div>`)[0];
+                popup_fe15c69cf21d18f452c2f9499a8724f2.setContent(html_ecef44a32f737b875a388ad43711221c);
+            
+        
+
+        marker_2d31adc721845f3002400f64b6c5a906.bindPopup(popup_fe15c69cf21d18f452c2f9499a8724f2)
+        ;
+
+        
+    
+    
+            marker_2d31adc721845f3002400f64b6c5a906.bindTooltip(
+                `<div>
+                     São Paulo, SP
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_2d31adc721845f3002400f64b6c5a906.setIcon(icon_2a229db52c03804d2c7ffb21a8211fa6);
+            
+    
+            var marker_c93648fd4883212aff221df2214051b7 = L.marker(
+                [-22.906847, -43.172897],
+                {
+}
+            ).addTo(marker_cluster_eace95bd6559eab44fff70c3a510c88a);
+        
+    
+            var icon_e038977f0b14ce52e97410b9648e1e71 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_82328bba76ba57a0d735a73aab522f04 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_562dc92f388d1001c38634fe28fcff5b = $(`<div id="html_562dc92f388d1001c38634fe28fcff5b" style="width: 100.0%; height: 100.0%;">             <div>                 <strong>Rio de Janeiro, RJ</strong><br>                 Copacabana, 200<br>                 <button class='btn btn-sm btn-primary select-endereco'                  data-cidade='Rio de Janeiro'                  data-estado='RJ'                  data-endereco='Copacabana, 200'>                 Selecionar                 </button>             </div>             </div>`)[0];
+                popup_82328bba76ba57a0d735a73aab522f04.setContent(html_562dc92f388d1001c38634fe28fcff5b);
+            
+        
+
+        marker_c93648fd4883212aff221df2214051b7.bindPopup(popup_82328bba76ba57a0d735a73aab522f04)
+        ;
+
+        
+    
+    
+            marker_c93648fd4883212aff221df2214051b7.bindTooltip(
+                `<div>
+                     Rio de Janeiro, RJ
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_c93648fd4883212aff221df2214051b7.setIcon(icon_e038977f0b14ce52e97410b9648e1e71);
+            
+    
+            var marker_07af98a89e2d3be30ef33e4ce209d099 = L.marker(
+                [-19.916681, -43.934493],
+                {
+}
+            ).addTo(marker_cluster_eace95bd6559eab44fff70c3a510c88a);
+        
+    
+            var icon_7135fee407346304a0110ba8dbe63b5a = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_6b93881f7ea71c4cc6e6306350149e02 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_15ceb1f8ab8ebac69b378d5edfb75a74 = $(`<div id="html_15ceb1f8ab8ebac69b378d5edfb75a74" style="width: 100.0%; height: 100.0%;">             <div>                 <strong>Belo Horizonte, MG</strong><br>                 Praça da Liberdade, 300<br>                 <button class='btn btn-sm btn-primary select-endereco'                  data-cidade='Belo Horizonte'                  data-estado='MG'                  data-endereco='Praça da Liberdade, 300'>                 Selecionar                 </button>             </div>             </div>`)[0];
+                popup_6b93881f7ea71c4cc6e6306350149e02.setContent(html_15ceb1f8ab8ebac69b378d5edfb75a74);
+            
+        
+
+        marker_07af98a89e2d3be30ef33e4ce209d099.bindPopup(popup_6b93881f7ea71c4cc6e6306350149e02)
+        ;
+
+        
+    
+    
+            marker_07af98a89e2d3be30ef33e4ce209d099.bindTooltip(
+                `<div>
+                     Belo Horizonte, MG
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_07af98a89e2d3be30ef33e4ce209d099.setIcon(icon_7135fee407346304a0110ba8dbe63b5a);
+            
+    
+            var marker_ba01d65d36bdbd1b8c1906f93f2f4343 = L.marker(
+                [-25.4284, -49.2733],
+                {
+}
+            ).addTo(marker_cluster_eace95bd6559eab44fff70c3a510c88a);
+        
+    
+            var icon_217eba7fe3e51eb765a00fb37f3b255f = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_28262f68036d26e690534de9047f4d7d = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_c3464380759b02f89ed251331faaade5 = $(`<div id="html_c3464380759b02f89ed251331faaade5" style="width: 100.0%; height: 100.0%;">             <div>                 <strong>Curitiba, PR</strong><br>                 R. XV de Novembro, 100<br>                 <button class='btn btn-sm btn-primary select-endereco'                  data-cidade='Curitiba'                  data-estado='PR'                  data-endereco='R. XV de Novembro, 100'>                 Selecionar                 </button>             </div>             </div>`)[0];
+                popup_28262f68036d26e690534de9047f4d7d.setContent(html_c3464380759b02f89ed251331faaade5);
+            
+        
+
+        marker_ba01d65d36bdbd1b8c1906f93f2f4343.bindPopup(popup_28262f68036d26e690534de9047f4d7d)
+        ;
+
+        
+    
+    
+            marker_ba01d65d36bdbd1b8c1906f93f2f4343.bindTooltip(
+                `<div>
+                     Curitiba, PR
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_ba01d65d36bdbd1b8c1906f93f2f4343.setIcon(icon_217eba7fe3e51eb765a00fb37f3b255f);
+            
+    
+            var marker_f36f0a657fb48c6017b724e5705a2ca8 = L.marker(
+                [-30.0277, -51.2287],
+                {
+}
+            ).addTo(marker_cluster_eace95bd6559eab44fff70c3a510c88a);
+        
+    
+            var icon_c93b74f7b923b0abc5ba8fc46cade460 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_6b3df23e0430458e7c67a4353abc82b2 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_fe79cbdbe92862fb1e4e710e540d68d5 = $(`<div id="html_fe79cbdbe92862fb1e4e710e540d68d5" style="width: 100.0%; height: 100.0%;">             <div>                 <strong>Porto Alegre, RS</strong><br>                 Av. Borges de Medeiros, 500<br>                 <button class='btn btn-sm btn-primary select-endereco'                  data-cidade='Porto Alegre'                  data-estado='RS'                  data-endereco='Av. Borges de Medeiros, 500'>                 Selecionar                 </button>             </div>             </div>`)[0];
+                popup_6b3df23e0430458e7c67a4353abc82b2.setContent(html_fe79cbdbe92862fb1e4e710e540d68d5);
+            
+        
+
+        marker_f36f0a657fb48c6017b724e5705a2ca8.bindPopup(popup_6b3df23e0430458e7c67a4353abc82b2)
+        ;
+
+        
+    
+    
+            marker_f36f0a657fb48c6017b724e5705a2ca8.bindTooltip(
+                `<div>
+                     Porto Alegre, RS
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_f36f0a657fb48c6017b724e5705a2ca8.setIcon(icon_c93b74f7b923b0abc5ba8fc46cade460);
+            
+    
+            var marker_db1f2f58f048991644050a19dcb1b229 = L.marker(
+                [-16.6799, -49.255],
+                {
+}
+            ).addTo(marker_cluster_eace95bd6559eab44fff70c3a510c88a);
+        
+    
+            var icon_2e939b887fdcdcc5194d6f14fde3b9fc = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_1fdaf0f1bb52fe92a3fbb8d82d6a7322 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_c928bd174ec1f246dfff18be2ee3a28c = $(`<div id="html_c928bd174ec1f246dfff18be2ee3a28c" style="width: 100.0%; height: 100.0%;">             <div>                 <strong>Goiânia, GO</strong><br>                 Av. Goiás, 400<br>                 <button class='btn btn-sm btn-primary select-endereco'                  data-cidade='Goiânia'                  data-estado='GO'                  data-endereco='Av. Goiás, 400'>                 Selecionar                 </button>             </div>             </div>`)[0];
+                popup_1fdaf0f1bb52fe92a3fbb8d82d6a7322.setContent(html_c928bd174ec1f246dfff18be2ee3a28c);
+            
+        
+
+        marker_db1f2f58f048991644050a19dcb1b229.bindPopup(popup_1fdaf0f1bb52fe92a3fbb8d82d6a7322)
+        ;
+
+        
+    
+    
+            marker_db1f2f58f048991644050a19dcb1b229.bindTooltip(
+                `<div>
+                     Goiânia, GO
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_db1f2f58f048991644050a19dcb1b229.setIcon(icon_2e939b887fdcdcc5194d6f14fde3b9fc);
+            
+    
+            var marker_f2bfb850fc07aeed83ac0c2167dc5a46 = L.marker(
+                [-3.7327, -38.527],
+                {
+}
+            ).addTo(marker_cluster_eace95bd6559eab44fff70c3a510c88a);
+        
+    
+            var icon_cf299a85b731583b00e56e8c3b079d9c = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_e509e96abab5de9f946fb4b1db24067b = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_90edf5a991368ba23b9292a7081761cf = $(`<div id="html_90edf5a991368ba23b9292a7081761cf" style="width: 100.0%; height: 100.0%;">             <div>                 <strong>Fortaleza, CE</strong><br>                 Av. Beira Mar, 600<br>                 <button class='btn btn-sm btn-primary select-endereco'                  data-cidade='Fortaleza'                  data-estado='CE'                  data-endereco='Av. Beira Mar, 600'>                 Selecionar                 </button>             </div>             </div>`)[0];
+                popup_e509e96abab5de9f946fb4b1db24067b.setContent(html_90edf5a991368ba23b9292a7081761cf);
+            
+        
+
+        marker_f2bfb850fc07aeed83ac0c2167dc5a46.bindPopup(popup_e509e96abab5de9f946fb4b1db24067b)
+        ;
+
+        
+    
+    
+            marker_f2bfb850fc07aeed83ac0c2167dc5a46.bindTooltip(
+                `<div>
+                     Fortaleza, CE
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_f2bfb850fc07aeed83ac0c2167dc5a46.setIcon(icon_cf299a85b731583b00e56e8c3b079d9c);
+            
+    
+            var marker_e0e00ef5b5ecbd4dbd14fba1c54fce14 = L.marker(
+                [-8.0476, -34.877],
+                {
+}
+            ).addTo(marker_cluster_eace95bd6559eab44fff70c3a510c88a);
+        
+    
+            var icon_7508a54f61bf2155d330cdcc0cb2ab4e = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_ed1a2f9bb3a540a498680b1af275ef61 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_2dd972f1e6d6b53f5f41ab83921d826f = $(`<div id="html_2dd972f1e6d6b53f5f41ab83921d826f" style="width: 100.0%; height: 100.0%;">             <div>                 <strong>Recife, PE</strong><br>                 Av. Boa Viagem, 700<br>                 <button class='btn btn-sm btn-primary select-endereco'                  data-cidade='Recife'                  data-estado='PE'                  data-endereco='Av. Boa Viagem, 700'>                 Selecionar                 </button>             </div>             </div>`)[0];
+                popup_ed1a2f9bb3a540a498680b1af275ef61.setContent(html_2dd972f1e6d6b53f5f41ab83921d826f);
+            
+        
+
+        marker_e0e00ef5b5ecbd4dbd14fba1c54fce14.bindPopup(popup_ed1a2f9bb3a540a498680b1af275ef61)
+        ;
+
+        
+    
+    
+            marker_e0e00ef5b5ecbd4dbd14fba1c54fce14.bindTooltip(
+                `<div>
+                     Recife, PE
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_e0e00ef5b5ecbd4dbd14fba1c54fce14.setIcon(icon_7508a54f61bf2155d330cdcc0cb2ab4e);
+            
+    
+            marker_cluster_eace95bd6559eab44fff70c3a510c88a.addTo(map_4e2a061ad5dadc5669b663ebaee9ae80);
+        
+</script>
+</html>

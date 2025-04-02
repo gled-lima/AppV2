@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="pt-br" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mapa de Endereços e Prioridades</title>
+    <!-- Bootstrap CSS (Replit Theme) -->
+    <link rel="stylesheet" href="https://cdn.replit.com/agent/bootstrap-agent-dark-theme.min.css">
+    <!-- Font Awesome icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-map-marked-alt me-2"></i>
+                Mapa de Prioridades
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarContent">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{{ url_for('index') }}">
+                            <i class="fas fa-map me-1"></i> Visualização de Mapa
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('tabela') }}">
+                            <i class="fas fa-table me-1"></i> Visualização de Tabela
+                        </a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav ms-auto">
+                    {% if current_user.is_authenticated %}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-user-circle me-1"></i> {{ current_user.username }}
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="{{ url_for('logout') }}">
+                                <i class="fas fa-sign-out-alt me-2"></i>Sair
+                            </a></li>
+                        </ul>
+                    </li>
+                    {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('login') }}">
+                            <i class="fas fa-sign-in-alt me-1"></i> Entrar
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('register') }}">
+                            <i class="fas fa-user-plus me-1"></i> Registrar
+                        </a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-lg-7">
+                <div class="card mb-4">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5><i class="fas fa-map me-2"></i>Mapa Interativo</h5>
+                        <div class="d-flex gap-2">
+                            <button class="btn btn-sm btn-outline-primary" type="button" id="toggleLimitBtn" title="Alternar entre exibir todos os pontos ou limitar para melhor desempenho">
+                                <i class="fas fa-tachometer-alt me-1"></i><span id="limitStatus">Sem limitação</span>
+                            </button>
+                            <div class="input-group" style="max-width: 300px;">
+                                <input type="text" class="form-control form-control-sm" id="searchInput" placeholder="Pesquisar endereço...">
+                                <button class="btn btn-sm btn-outline-secondary" type="button" id="searchButton">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="map-container">
+                            <iframe src="{{ url_for('static', filename='mapa.html') }}" width="100%" height="500" frameborder="0" id="mapFrame"></iframe>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-5">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5><i class="fas fa-star me-2"></i>Definir Prioridade</h5>
+                    </div>
+                    <div class="card-body">
+                        <form id="preferenciaForm">
+                            <div class="mb-3">
+                                <label for="cidadeField" class="form-label">Cidade</label>
+                                <input type="text" class="form-control" id="cidadeField" readonly>
+                            </div>
+                            <div class="mb-3">
+                                <label for="estadoField" class="form-label">Estado</label>
+                                <input type="text" class="form-control" id="estadoField" readonly>
+                            </div>
+                            <div class="mb-3">
+                                <label for="enderecoField" class="form-label">Endereço</label>
+                                <input type="text" class="form-control" id="enderecoField" readonly>
+                            </div>
+                            <div class="mb-3">
+                                <label for="prioridadeField" class="form-label">Prioridade</label>
+                                <input type="number" class="form-control" id="prioridadeField" name="preferencia" placeholder="Defina um número para a prioridade">
+                                <small class="form-text text-muted">Insira qualquer número como prioridade de acordo com sua classificação.</small>
+                            </div>
+                            <button type="submit" class="btn btn-primary" id="salvarBtn" disabled>
+                                <i class="fas fa-save me-2"></i>Salvar Prioridade
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5><i class="fas fa-file-upload me-2"></i>Importar Endereços (CSV)</h5>
+                    </div>
+                    <div class="card-body">
+                        <form id="uploadForm" enctype="multipart/form-data">
+                            <div class="mb-3">
+                                <label for="csvFile" class="form-label">Arquivo CSV com endereços</label>
+                                <input type="file" class="form-control" id="csvFile" name="file" accept=".csv">
+                                <div class="form-text">
+                                    O arquivo deve conter as colunas: lat, lon, cidade, estado, endereco
+                                </div>
+                            </div>
+                            <div class="d-flex">
+                                <button type="submit" class="btn btn-primary me-2">
+                                    <i class="fas fa-upload me-1"></i> Carregar
+                                </button>
+                                <a href="/download_modelo_csv" class="btn btn-outline-secondary">
+                                    <i class="fas fa-file-download me-1"></i> Baixar Modelo
+                                </a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5><i class="fas fa-list me-2"></i>Prioridades Salvas</h5>
+                        <div class="d-flex">
+                            <button id="limparBtn" class="btn btn-sm btn-outline-danger me-2">
+                                <i class="fas fa-trash-alt me-1"></i> Limpar
+                            </button>
+                            <a href="/download_preferencias" class="btn btn-sm btn-outline-info">
+                                <i class="fas fa-download me-1"></i> Baixar
+                            </a>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover" id="preferenciaTable">
+                                <thead>
+                                    <tr>
+                                        <th>Cidade</th>
+                                        <th>Endereço</th>
+                                        <th>Prioridade</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Será preenchido via JavaScript -->
+                                </tbody>
+                            </table>
+                        </div>
+                        <div id="semPreferencias" class="text-center py-3">
+                            <i class="fas fa-info-circle me-2"></i>Nenhuma prioridade salva ainda.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Notificação -->
+    <div class="modal fade" id="notificationModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalTitle">Notificação</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="modalMessage">
+                    <!-- Mensagem da notificação -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>

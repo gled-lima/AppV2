@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="pt-br" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tabela de Endereços e Prioridades</title>
+    <!-- Bootstrap CSS (Replit Theme) -->
+    <link rel="stylesheet" href="https://cdn.replit.com/agent/bootstrap-agent-dark-theme.min.css">
+    <!-- Font Awesome icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        .priority-input {
+            width: 60px;
+            text-align: center;
+        }
+        .table-container {
+            position: relative;
+            min-height: 400px;
+        }
+        .loading-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .pagination-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1rem;
+        }
+        .save-changes-bar {
+            position: sticky;
+            bottom: 0;
+            background-color: var(--bs-dark);
+            padding: 10px;
+            border-top: 1px solid var(--bs-gray-700);
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            display: none;
+        }
+        .map-preview {
+            height: 400px;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-map-marked-alt me-2"></i>
+                Mapa de Prioridades
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarContent">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('index') }}">
+                            <i class="fas fa-map me-1"></i> Visualização de Mapa
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{{ url_for('tabela') }}">
+                            <i class="fas fa-table me-1"></i> Visualização de Tabela
+                        </a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav ms-auto">
+                    {% if current_user.is_authenticated %}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-user-circle me-1"></i> {{ current_user.username }}
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="{{ url_for('logout') }}">
+                                <i class="fas fa-sign-out-alt me-2"></i>Sair
+                            </a></li>
+                        </ul>
+                    </li>
+                    {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('login') }}">
+                            <i class="fas fa-sign-in-alt me-1"></i> Entrar
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('register') }}">
+                            <i class="fas fa-user-plus me-1"></i> Registrar
+                        </a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="card mb-4">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5><i class="fas fa-table me-2"></i>Tabela de Endereços</h5>
+                        <div class="d-flex gap-2">
+                            <div class="input-group" style="max-width: 300px;">
+                                <input type="text" class="form-control form-control-sm" id="searchInputTabela" placeholder="Pesquisar endereço...">
+                                <button class="btn btn-sm btn-outline-secondary" type="button" id="searchButtonTabela">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row mb-3">
+                            <div class="col-md-5">
+                                <label for="filtroCidade" class="form-label">Filtrar por Cidade:</label>
+                                <select class="form-select" id="filtroCidade">
+                                    <option value="">Todas as Cidades</option>
+                                    {% for cidade in cidades %}
+                                        <option value="{{ cidade }}">{{ cidade }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="col-md-5">
+                                <label for="filtroEstado" class="form-label">Filtrar por Estado:</label>
+                                <select class="form-select" id="filtroEstado">
+                                    <option value="">Todos os Estados</option>
+                                    {% for estado in estados %}
+                                        <option value="{{ estado }}">{{ estado }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="col-md-2 d-flex align-items-end">
+                                <button id="btnAplicarFiltro" class="btn btn-primary w-100">
+                                    <i class="fas fa-filter me-1"></i> Filtrar
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="table-container">
+                            <div class="loading-overlay" id="loadingOverlay">
+                                <div class="spinner-border text-light" role="status">
+                                    <span class="visually-hidden">Carregando...</span>
+                                </div>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table table-hover" id="enderecosTabelaBody">
+                                    <thead>
+                                        <tr>
+                                            <th>Cidade</th>
+                                            <th>Estado</th>
+                                            <th>Endereço</th>
+                                            <th class="text-center">Prioridade</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- Será preenchido via JavaScript -->
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div id="semEnderecos" class="text-center py-3 d-none">
+                                <i class="fas fa-info-circle me-2"></i>Nenhum endereço encontrado com os filtros aplicados.
+                            </div>
+                        </div>
+
+                        <div class="pagination-container">
+                            <div class="pagination-info">
+                                Exibindo <span id="exibicaoInicio">0</span> a <span id="exibicaoFim">0</span> de <span id="totalRegistros">0</span> endereços
+                            </div>
+                            <div>
+                                <nav aria-label="Navegação de página">
+                                    <ul class="pagination pagination-sm" id="paginacao">
+                                        <!-- Será preenchido via JavaScript -->
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="save-changes-bar" id="saveChangesBar">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <span class="badge bg-warning"><i class="fas fa-exclamation-triangle me-1"></i> Alterações não salvas</span>
+                            <span class="ms-2"><span id="changesCount">0</span> prioridades alteradas</span>
+                        </div>
+                        <div>
+                            <button class="btn btn-outline-secondary me-2" id="btnCancelarAlteracoes">
+                                <i class="fas fa-times me-1"></i> Cancelar
+                            </button>
+                            <button class="btn btn-success" id="btnSalvarAlteracoes">
+                                <i class="fas fa-save me-1"></i> Salvar Alterações
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5><i class="fas fa-map me-2"></i>Visualização no Mapa</h5>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="map-preview">
+                            <iframe src="{{ url_for('static', filename='mapa.html') }}" width="100%" height="100%" frameborder="0" id="mapFrameTabela"></iframe>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5><i class="fas fa-info-circle me-2"></i>Informações</h5>
+                    </div>
+                    <div class="card-body">
+                        <p>
+                            <i class="fas fa-info-circle me-2 text-primary"></i>
+                            <strong>Prioridades:</strong> Insira qualquer número nos campos de prioridade conforme sua classificação.
+                        </p>
+                        <p>
+                            <i class="fas fa-circle text-danger me-2"></i>
+                            <strong>Sem prioridade</strong>: Ainda não avaliado
+                        </p>
+                        <hr>
+                        <p>
+                            <i class="fas fa-lightbulb me-2 text-warning"></i>
+                            <strong>Dica:</strong> Para definir prioridades para múltiplos endereços de uma cidade, utilize o filtro por cidade e defina os valores na tabela.
+                        </p>
+                        <p>
+                            <i class="fas fa-lightbulb me-2 text-warning"></i>
+                            <strong>Dica:</strong> Após alterar as prioridades, clique no botão "Salvar Alterações" que aparece na parte inferior da tela.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5><i class="fas fa-cog me-2"></i>Ações</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-grid gap-2">
+                            <a href="/download_preferencias" class="btn btn-outline-info">
+                                <i class="fas fa-download me-1"></i> Baixar Prioridades
+                            </a>
+                            <button id="btnLimparPrioridadesTabela" class="btn btn-outline-danger">
+                                <i class="fas fa-trash-alt me-1"></i> Limpar Todas as Prioridades
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Notificação -->
+    <div class="modal fade" id="notificationModalTabela" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalTitleTabela">Notificação</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="modalMessageTabela">
+                    <!-- Mensagem da notificação -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="{{ url_for('static', filename='js/tabela.js') }}"></script>
+</body>
+</html>
