@@ -1,0 +1,61 @@
+from flask import Flask, render_template, request, jsonify
+import pandas as pd
+import folium
+from folium.plugins import MarkerCluster
+import os
+
+app = Flask(__name__)
+CSV_FILE = "enderecos.csv"
+
+# Dados de exemplo (latitude, longitude, cidade, estado, endereço)
+enderecos = [
+    {"lat": -23.55052, "lon": -46.633308, "cidade": "São Paulo", "estado": "SP", "endereco": "Av. Paulista, 1000"},
+    {"lat": -22.906847, "lon": -43.172897, "cidade": "Rio de Janeiro", "estado": "RJ", "endereco": "Copacabana, 200"},
+    {"lat": -19.916681, "lon": -43.934493, "cidade": "Belo Horizonte", "estado": "MG", "endereco": "Praça da Liberdade, 300"}
+]
+
+# Criar mapa interativo
+def criar_mapa():
+    mapa = folium.Map(location=[-15.7801, -47.9292], zoom_start=5)
+    marker_cluster = MarkerCluster().add_to(mapa)
+    
+    for endereco in enderecos:
+        folium.Marker(
+            location=[endereco["lat"], endereco["lon"]],
+            popup=f"{endereco['cidade']}, {endereco['estado']}",
+            tooltip="Clique para selecionar",
+            icon=folium.Icon(color='blue')
+        ).add_to(marker_cluster)
+    
+    mapa.save("templates/mapa.html")
+
+# Rota principal
+def carregar_csv():
+    if os.path.exists(CSV_FILE):
+        return pd.read_csv(CSV_FILE)
+    return pd.DataFrame(columns=["cidade", "estado", "endereco", "preferencia"])
+
+@app.route("/")
+def index():
+    criar_mapa()
+    return render_template("index.html")
+
+@app.route("/get_enderecos", methods=["POST"])
+def get_enderecos():
+    data = request.get_json()
+    cidade = data.get("cidade")
+    estado = data.get("estado")
+    
+    enderecos_filtrados = [e for e in enderecos if e["cidade"] == cidade and e["estado"] == estado]
+    return jsonify(enderecos_filtrados)
+
+@app.route("/salvar_preferencia", methods=["POST"])
+def salvar_preferencia():
+    data = request.get_json()
+    df = carregar_csv()
+    df = pd.concat([df, pd.DataFrame([data])], ignore_index=True)
+    df.to_csv(CSV_FILE, index=False)
+    return jsonify({"status": "success"})
+
+if __name__ == "__main__":
+    app.run(debug=False)
